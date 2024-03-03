@@ -66,6 +66,7 @@ def decode(encoded_message, rails):
             k += 1
 
         else:
+            sp1 = ''
             '''while flag1:
                 for _ in range(d, len(encoded_message), (rails - 1)):
                     d += 1
@@ -85,9 +86,11 @@ def decode(encoded_message, rails):
             for i in reversed(range(rails)):
                 if i != 0 and i != (rails - 1):
                     for j in range(d, len(encoded_message)):
-                        sp.append(encoded_message[j])
+                        sp1 += encoded_message[j]
+                        d += (rails-1)
                         break
-
+            sp1 = sp1[::-1]
+            sp.append(sp1)
             flag1 = True
             d = 0
 
