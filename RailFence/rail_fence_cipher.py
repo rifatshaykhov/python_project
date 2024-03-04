@@ -29,58 +29,55 @@ def encode(message, rails):
 
 def decode(encoded_message, rails):
     count = 0
+    a1 = 0
     a = 0
     b = len(encoded_message)
     c = 0
-    d = 0
     sp = []
     flag = True
     flag1 = True
     while count != len(encoded_message) // (rails - 1):
+        while flag:
+            for _ in range(c, len(encoded_message), (rails - 1) * 2):
+                c += 1
+            flag = False
+            c += count
+        while flag1:
+            for _ in range((rails - 1), len(encoded_message), ((rails - 1) * 2)):
+                b -= 1
+            a1 = len(encoded_message[c:b])
+            flag1 = False
         if count % 2 == 0:
             for i in range(rails):
                 if i == 0:
                     sp.append(encoded_message[a])
                     a += 1
                 elif i == (rails - 1):
-                    if count == 0:
-                        for j in range(i, len(encoded_message), ((rails - 1) * 2)):
-                            b -= 1
                     while b != len(encoded_message):
                         sp.append(encoded_message[b])
                         b += 1
                         break
                 else:
-                    while flag:
-                        for _ in range(c, len(encoded_message), (rails - 1) * 2):
-                            c += 1
-                        flag = False
-                        c += count
-                    for j in range(c, len(encoded_message)):
+                    for j in range(c, len(encoded_message), (rails-1)*2):
                         sp.append(encoded_message[j])
-                        c += (rails - 1)
+                        c += round(a1 / (rails-2))
                         break
             flag = True
             c = 0
 
         else:
             sp1 = ''
-            while flag1:
-                for _ in range(d, len(encoded_message), (rails - 1) * 2):
-                    d += 1
-                flag1 = False
-                d += count
-            for i in reversed(range(rails)):
+            for i in range(rails):
                 if i != 0 and i != (rails - 1):
-                    for j in range(d, len(encoded_message)):
+                    for j in range(c, len(encoded_message)):
                         sp1 += encoded_message[j]
-                        d += (rails-1)
+                        c += round(a1 / (rails-2))
                         break
             sp.append(sp1[::-1])
-            flag1 = True
-            d = 0
-
+            flag = True
+            c = 0
         count += 1
-    if count % 2 == 0:
+    dlina = ''.join(sp)
+    if count % 2 == 0 and len(encoded_message) != len(dlina):
         sp.append(encoded_message[-1])
     return ''.join(sp)
